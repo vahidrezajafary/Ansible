@@ -2,7 +2,7 @@
 
 
 
-{% hint style="success" %}
+
 <mark style="color:green;">**Introduction:**</mark> Welcome to a new course from the DevOps Engineer package From [www.devopscity.net](./) Produced by Vahireza Jafary. In this course, we will get to know Ansible, and we will advance this course together in a practical and project-oriented way.
 {% endhint %}
 
