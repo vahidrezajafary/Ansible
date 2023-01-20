@@ -24,3 +24,25 @@ The format is /etc/ansible/ hosts are in INI like format, such as:
 [monitoring_servers]
 10.10.12.1
 ```
+
+{% hint style="info" %}
+If you have hosts that run on a non-standard SSH port, then you can put the port number after the hostname with the colon
+
+
+
+srv1-example.com:5450
+
+10.10.15.1:5450&#x20;
+{% endhint %}
+
+#### Hosts Variables
+
+You can assign the variables to the hosts that will be used in playbooks, such as:
+
+```
+path: /opt/tomcat10
+src: https://mirrors.estointernet.in/apache/tomcat/tomcat-10/v10.0.4/bin/apache-tomcat- 10.0.4.tar.gz
+```
+
+
+
