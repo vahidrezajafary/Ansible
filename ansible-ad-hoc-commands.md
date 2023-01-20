@@ -18,7 +18,7 @@ ansible <hosts> [-m <module_name>] -a <"arguments"> -u <username> [--become]
 <mark style="color:orange;">**Hosts**</mark>**:** It can be an entry in the inventory file. For specifying all hosts in the inventory, use all or "\*".
 
 \
-<mark style="color:orange;">M</mark><mark style="color:orange;">**odule\_name**</mark>**:** It is an optional parameter. There are hundreds of modules available in the Ansible, such as **shell, yum, apt, file,** and **copy**. By default, it is the **command.**
+<mark style="color:orange;">**Module\_name**</mark>**:** It is an optional parameter. There are hundreds of modules available in the Ansible, such as **shell, yum, apt, file,** and **copy**. By default, it is the **command.**
 
 <mark style="color:orange;">**Arguments**</mark>**:** We should pass values that are required by the module. It can change according to the module used.
 
@@ -53,39 +53,40 @@ ssh username@remote_host
 {% endcode %}
 
 \
-<mark style="color:green;">1. Parallelism and shell commands</mark>
+<mark style="color:orange;">How to Execute an Ansible Ad-hoc</mark>
+-------------------------------------------------------------------
 
-You can reboot your company server in 12 parallel forks at the same time. For this, you need to set up the SSHagent for connection.
+Use <mark style="color:blue;">**`ansible`**</mark><mark style="color:blue;">** **</mark><mark style="color:blue;">****</mark> command to execute ad hoc command.
 
-To run reboot for all your company servers in the group, 'abc', in 12 parallel forks:
+### <mark style="color:orange;">Some common commands</mark>
 
 {% code lineNumbers="true" %}
 ```
-ansible abc -a "/sbin/reboot" -f 12  
+ansible all -a "/sbin/reboot" -f 12  
 ansible all -a "df -h" -u root
 ansible servers -a "uptime" -u root
 ansible server1:server2 -m ping -u root
 ansible all -m apt -a "name=vim state=latest" -u root
- ansible abc -m copy -a "src = /etc/yum.conf dest = /tmp/yum.conf"  
- ansible abc -m file -a "dest = /creatdir/uservahid/new mode = 888 owner = uservahid group = uservahid state = directory"   
- ansible abc -m file -a "dest = /creatdir/uservahid/new state = absent"  
- ansible all -m user -a "name=vahid password=*******"  
- ansible all -m user -a "name=vahid state=absent"  
- ansible webservers -m service -a "name=httpd state=started"  
- ansible webservers -m service -a "name=httpd state=restarted"  
- ansible webservers -m service -a "name=httpd state=stopped"  
+ansible abc -m copy -a "src = /etc/yum.conf dest = /tmp/yum.conf"  
+ansible abc -m file -a "dest = /creatdir/uservahid/new mode = 888 owner = uservahid group = uservahid state = directory"   
+ansible abc -m file -a "dest = /creatdir/uservahid/new state = absent"  
+ansible all -m user -a "name=vahid password=*******"  
+ansible all -m user -a "name=vahid state=absent"  
+ansible webservers -m service -a "name=httpd state=started"  
+ansible webservers -m service -a "name=httpd state=restarted"  
+ansible webservers -m service -a "name=httpd state=stopped"  
 ```
 {% endcode %}
 
 
 
-<mark style="background-color:red;">By default, Ansible will run the above ad-hoc commands from the current user account. If you want to change then pass the username in ad-hoc command as follows:</mark>
+{% hint style="info" %}
+By default, Ansible will run the above ad-hoc commands from the current user account. If you want to change then pass the username in ad-hoc command as follows:
 
-{% code lineNumbers="true" %}
-```
- ansible abc -a "/sbin/reboot" -f 12 -u username 
-```
-{% endcode %}
+<mark style="background-color:orange;">ansible all -a "df -h" -u root</mark>
+{% endhint %}
+
+### <mark style="color:orange;"></mark>
 
 \
 \
