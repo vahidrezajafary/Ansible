@@ -13,3 +13,4 @@
 * [-Ansible Roles](ansible-roles.md)
 * [-Ansible Tower](ansible-tower.md)
 * [Ansible Galaxy](ansible-galaxy.md)
+* [-Ansible Debug](ansible-debug.md)
