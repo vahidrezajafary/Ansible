@@ -1,246 +1,66 @@
 # Ansible Variables
 
-Ansible playbook supports defining the variable in two forms, Either as a separate file with full of variables and values like a properties file. or a Single liner variable declaration like we do in any common programming languages
+In playbooks, the variable is very similar to using the variables in a programming language. It helps you to assign a value to a variable and use it anywhere in the playbook. You can put the conditions around the value of the variables and use them in the playbook accordingly.
 
-<mark style="background-color:orange;">vars</mark> to define inline variables within the playbook
+#### Creating Valid Variable Names
 
-<mark style="background-color:orange;">vars\_files</mark> to import files with variables
+Before start using variables, it's important to know what valid variable names are.
 
-Let’s suppose we want to add a few for our webserver like the server name and SSL key file and cert file etc.
+Variable names should be letters, numbers, and underscores. The variable should always start with a letter.
 
-{% hint style="danger" %}
-Tips:
+foo\_port and foo2 both are the correct or valid variable names.
 
-1- Allways use variables under \{{ variables-name\}}&#x20;
+Foo-port, foo port, foo.port, and 10foo all are invalid variable names.
 
-2- when use variables in start of Line shuld use "\{{ variables-name\}}" format
-
-3- Dont use "Hyphen" in Variables Name
-{% endhint %}
-
-<mark style="color:orange;">**Method 1**</mark> : it can be done with <mark style="background-color:orange;">vars</mark> like this
-
-{% code title="Tomcat_playbook.yml" %}
-```yaml
----
-- name: Install Apache Tomcat10 using ansible
-  hosts: webserver
-  remote_user: ubuntu
-  become: true
-  tasks:
-    - name: Update the System Packages
-      apt:
-        upgrade: yes
-        update_cache: yes
- 
-    - name: Create a Tomcat User
-      user:
-        name: tomcat
- 
-    - name: Create a Tomcat Group
-      group:
-        name: tomcat
- 
-    - name: Install JAVA
-      apt:
-        name: default-jdk
-        state: present
- 
- 
-    - name: Create a Tomcat Directory
-      file:
-        path: /opt/tomcat10
-        owner: tomcat
-        group: tomcat
-        mode: 755
-        recurse: yes
- 
-    - name: download & unarchive tomcat10 
-      unarchive:
-        src: https://mirrors.estointernet.in/apache/tomcat/tomcat-10/v10.0.4/bin/apache-tomcat- 10.0.4.tar.gz
-        dest: /opt/tomcat10
-        remote_src: yes
-        extra_opts: [--strip-components=1]
- 
-    - name: Change ownership of tomcat directory
-      file:
-        path: /opt/tomcat10
-        owner: tomcat
-        group: tomcat
-        mode: "u+rwx,g+rx,o=rx"
-        recurse: yes
-        state: directory
- 
-    - name: Copy Tomcat service from local to remote
-      copy:
-        src: /etc/tomcat.service
-        dest: /etc/systemd/system/
-        mode: 0755
- 
-    - name: Start and Enable Tomcat 10 on sever
-      systemd:
-        name: tomcat
-        state: started
-        daemon_reload: true
-﻿
-```
-{% endcode %}
-
-
-
-{% code title="variables_playboock.yml" %}
-```yaml
-----
-- name: Install Apache Tomcat10 
-  hosts: webserver
-  remote_user: ubuntu
-  become: true
-  vars:
-    - var_path_Tomcat: 
-    - var_src_Tomcat: 
-  
-  tasks:
-    - name: Update the System Packages
-      apt:
-        upgrade: yes
-        update_cache: yes
- 
-    - name: Create a Tomcat User
-      user:
-        name: tomcat
- 
-    - name: Create a Tomcat Group
-      group:
-        name: tomcat
- 
-    - name: Install JAVA
-      apt:
-        name: default-jdk
-        state: present
- 
- 
-    - name: Create a Tomcat Directory
-      file:
-        path: {{var_path_Tomcat}}
-        owner: tomcat
-        group: tomcat
-        mode: 755
-        recurse: yes
- 
-    - name: download & unarchive tomcat10 
-      unarchive:
-        src: {{var_src_Tomcat}}
-        dest: /opt/tomcat10
-        remote_src: yes
-        extra_opts: [--strip-components=1]
- 
-    - name: Change ownership of tomcat directory
-      file:
-        path: /opt/tomcat10
-        owner: tomcat
-        group: tomcat
-        mode: "u+rwx,g+rx,o=rx"
-        recurse: yes
-        state: directory
- 
-    - name: Copy Tomcat service from local to remote
-      copy:
-        src: /etc/tomcat.service
-        dest: /etc/systemd/system/
-        mode: 0755
- 
-    - name: Start and Enable Tomcat 10 on sever
-      systemd:
-        name: tomcat
-        state: started
-        daemon_reload: true
-```
-{% endcode %}
-
-<mark style="background-color:orange;">**Method 2**</mark>**:**<mark style="background-color:orange;">vars\_files</mark> to import files with variables
-
-#### create  vars\_of\_tomcat.yml file
+YAML supports dictionaries that map keys to values. For instance:
 
 ```
-          path: /opt/tomcat10
-          src: https://mirrors.estointernet.in/apache/tomcat/tomcat-10/v10.0.4/bin/apache-tomcat- 10.0.4.tar.gz
+foo:  
+  field1: one  
+  field2: two  
 ```
 
-{% code title="Vars_files_tomcat.yml" %}
-```yaml
-----
-- name: Install Apache Tomcat10 
-  hosts: webserver
-  remote_user: ubuntu
-  become: true
-  vars_files:
-      - vars_of_tomcat.yml 
-  
-  tasks:
-    - name: Update the System Packages
-      apt:
-        upgrade: yes
-        update_cache: yes
- 
-    - name: Create a Tomcat User
-      user:
-        name: tomcat
- 
-    - name: Create a Tomcat Group
-      group:
-        name: tomcat
- 
-    - name: Install JAVA
-      apt:
-        name: default-jdk
-        state: present
- 
- 
-    - name: Create a Tomcat Directory
-      file:
-        path: {{var_path_Tomcat}}
-        owner: tomcat
-        group: tomcat
-        mode: 755
-        recurse: yes
- 
-    - name: download & unarchive tomcat10 
-      unarchive:
-        src: {{var_src_Tomcat}}
-        dest: /opt/tomcat10
-        remote_src: yes
-        extra_opts: [--strip-components=1]
- 
-    - name: Change ownership of tomcat directory
-      file:
-        path: /opt/tomcat10
-        owner: tomcat
-        group: tomcat
-        mode: "u+rwx,g+rx,o=rx"
-        recurse: yes
-        state: directory
- 
-    - name: Copy Tomcat service from local to remote
-      copy:
-        src: /etc/tomcat.service
-        dest: /etc/systemd/system/
-        mode: 0755
- 
-    - name: Start and Enable Tomcat 10 on sever
-      systemd:
-        name: tomcat
-        state: started
-        daemon_reload: true
+Then you can reference a specific field in the dictionary using either bracket notation or dot notation:
+
 ```
-{% endcode %}
+foo['field1']  
+foo.field1  
+```
 
+Both will reference the same value "one". But, if you choose to use dot notation, be aware that some keys can cause problems because they collide with the attributes and methods of python dictionaries. You should use bracket notation instead of dot notation if you use keys which start and end with two underscores or any of the known public attributes:
 
+#### Example
 
+```
+- hosts : <your hosts>   
+vars:  
+tomcat_port : 8080   
+```
 
+In the above example, defined a variable name **tomcat\_port** and assigned the value 8080 to the variable and can use it in your playbook wherever required.
 
+The below code is from one of the roles (install-tomcat), such as:
 
+```
+block:   
+   - name: Install Tomcat artifacts   
+      action: >   
+      yum name = "demo-tomcat-1" state = present   
+      register: Output   
+            
+   always:   
+      - debug:   
+         msg:   
+            - "Install Tomcat artifacts task ended with message: {{Output}}"   
+            - "Installed Tomcat artifacts - {{Output.changed}}"   
+```
 
+#### Explanation
 
-
-####
+* **block:** The Ansible syntax to execute a given block.
+* **name:** It is used in logging and helps in debugging which all blocks were successfully executed.
+* **action:** The action is an Ansible keyword used in YAML.
+* **register:** The output of the action tag is registered by using the register keyword.
+* **always:** It is also an Ansible keyword; it says that below will still be executed.
+* **msg:** It displays the message.
 
