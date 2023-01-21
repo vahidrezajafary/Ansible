@@ -1,25 +1,30 @@
 # -Ansible Debug
 
-IS a printing statement during execution and can be useful for debugging variables or expressions.
+Is a printing statement during execution and can be useful for debugging variables or expressions.
 
 Parameters
 
-msg&#x20;
+<mark style="color:orange;">**1- msg**</mark>&#x20;
 
-var
+<mark style="color:orange;">**2- var**</mark>
 
-&#x20;verbosity
+<mark style="color:orange;">**3- verbosity**</mark>
 
-msg
+### <mark style="color:green;">1- Explain msg :</mark>
 
-<pre><code>---  
+```
+---  
 hosts: localhost     
 tasks: 
-<strong>- debug: msg="this is sample test"
-</strong><strong>
-</strong></code></pre>
+- debug: msg="this is sample test"
+```
 
-<pre><code>---  
+
+
+### <mark style="color:green;">2- Explain Var</mark>
+
+```yaml
+---  
 - name: Debug Example Uptime  
 hosts: localhost     
 tasks:  
@@ -28,18 +33,36 @@ tasks:
   register: result  
    
 - name: Print uptime  
-<strong>  debug:  
-</strong>   msg: {{result}}
+  debug:  
+   msg: {{result}}
    
    
    
 ---
   - name: Debug Example Uptime  
-<strong>    hosts: localhost     
-</strong>    tasks:  
-<strong>    - name: Find Uptime  
-</strong>     debug:
+    hosts: localhost     
+    tasks:  
+    - name: Find Uptime  
+     debug:
        msg: "Server IP adress ={{ansible_default_ipv4.adress}}"
        msg: "Server Hostname is={{inventory_hostname}}"
-</code></pre>
+```
+
+### <mark style="color:green;">**3- Explain verbosity**</mark>
+
+```
+---  
+- name: Debug Example Uptime  
+hosts: localhost     
+tasks:  
+- name: verbocity is default
+  debug:  
+   msg: "verbocirty is default"   
+  
+- name: verbocity is 3
+  debug:  
+   msg: "verbosity is 3"   
+   verbosity: 3
+  
+```
 
